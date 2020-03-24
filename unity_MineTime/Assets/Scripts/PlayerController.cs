@@ -15,6 +15,7 @@ public class PlayerController : MonoBehaviour
     private GameObject itemToCollect;
     //private Item itemInHand;
     private int itemInHandId = 0;
+    public ItemObject itemInHand;
 
     private GameManager gameManager;
     private Inventory inventory;
@@ -39,15 +40,10 @@ public class PlayerController : MonoBehaviour
 
         float mouseScroll = Input.mouseScrollDelta.y;
 
-        if (mouseScroll > 0) {
-            itemInHandId++;
-            if (itemInHandId >= inventory.size)
-                itemInHandId -= inventory.size;
-        } else if (mouseScroll < 0) {
-            itemInHandId--;
-            if (itemInHandId < 0)
-                itemInHandId += inventory.size;
-        }
+        if (mouseScroll > 0) 
+            ScrollRight ();
+        else if (mouseScroll < 0) 
+            ScrollLeft ();
     }
 
     void FixedUpdate () {
@@ -73,26 +69,49 @@ public class PlayerController : MonoBehaviour
         }
     }
 
+    void ScrollRight () {
+        itemInHandId++;
+        if (itemInHandId >= inventory.size)
+            itemInHandId -= inventory.size;
+        UpdateItemInHand ();
+    }
+
+    void ScrollLeft () {
+        itemInHandId--;
+        if (itemInHandId < 0)
+            itemInHandId += inventory.size;
+        UpdateItemInHand (); 
+    }
+
     void CollectItem () {
         if (itemToCollect == null) 
             return;
 
         inventory.CollectItem (itemToCollect);
+        UpdateItemInHand (); 
     }
 
     void DropItem () {
-        //if (itemInHand == null) 
-         //   return;
+        if (itemInHand.item == null) 
+            return;
             
-        //GameObject instantiatedItem = Instantiate (itemPrefab, transform.position, Quaternion.identity);
-        //instantiatedItem.GetComponent<ItemObject> ().ChangeItem(itemInHand);
-        //itemInHand = null;
+        GameObject instantiatedItem = Instantiate (itemPrefab, transform.position, Quaternion.identity);
+        instantiatedItem.GetComponent<ItemObject> ().ChangeItem(itemInHand.item);
+        inventory.RemoveItem(itemInHandId);
+        UpdateItemInHand ();
     }
 
     void UseItem () {
-        //if (itemInHand == null)
-         //   return;
+        itemInHand.UseItem ();
+        UpdateItemInHand ();
+    }
 
-        
+    void UpdateItemInHand () {
+        Item newItem = inventory.GetItem(itemInHandId);
+
+        if (itemInHand.item == newItem)
+            return;
+
+        itemInHand.ChangeItem(newItem);
     }
 }

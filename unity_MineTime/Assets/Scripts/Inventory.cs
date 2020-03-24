@@ -9,7 +9,7 @@ public class Inventory : MonoBehaviour
     private Item [] items;
 
     void Awake () {
-        UpdateSize(1);
+        UpdateSize(3);
     }
 
     public void UpdateSize (int newSize) {
@@ -47,6 +47,12 @@ public class Inventory : MonoBehaviour
 
     public void RemoveItem (int id) {
         items[id] = null;
+    }
+
+    public Item GetItem (int id) {
+        if (id >= size || items[id] == null)
+            return null;
+        return items[id];
     }
 
 }

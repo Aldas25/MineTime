@@ -13,11 +13,22 @@ public class ItemObject : MonoBehaviour
     }
 
     void UpdateDisplay () {
-        gameObject.GetComponent<SpriteRenderer> ().sprite = item.sprite;
+        Sprite newSprite = item==null ? null : item.sprite;
+        
+        gameObject.GetComponent<SpriteRenderer> ().sprite = newSprite;
     } 
 
     public void ChangeItem (Item newItem) {
         item = newItem;
         UpdateDisplay();
+    }
+
+    public void UseItem () {
+        if (item == null)
+            return;
+        
+        usable = true;
+
+        // TODO: use it
     }
 }
