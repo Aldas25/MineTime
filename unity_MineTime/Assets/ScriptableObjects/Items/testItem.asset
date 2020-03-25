@@ -13,5 +13,5 @@ MonoBehaviour:
   m_Name: testItem
   m_EditorClassIdentifier: 
   itemName: TEST
-  sprite: {fileID: 21300000, guid: a4c33b0e2469dc249acb15fa294daf36, type: 3}
+  sprite: {fileID: 21300000, guid: 69ffb5e1104ff5f409ded9a1cdd559d0, type: 3}
   damage: 1
