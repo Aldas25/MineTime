@@ -7,6 +7,8 @@ public class PlayerController : MonoBehaviour
 
     public float moveSpeed = 5.0f;
     public GameObject itemPrefab;
+    public Animator animator;
+    public Transform spriteTransform;
 
     private Rigidbody2D rb;
     private Vector2 movement;
@@ -29,7 +31,11 @@ public class PlayerController : MonoBehaviour
     void Update() {
         movement.x = Input.GetAxisRaw("Horizontal");
         movement.y = Input.GetAxisRaw("Vertical");
-        // TODO: animations!
+        
+        animator.SetBool ("Horizontal", movement.x!=0);
+        animator.SetBool ("Vertical", movement.y != 0);
+        if ((movement.x < 0 && spriteTransform.localScale.x > 0) || (movement.x > 0 && spriteTransform.localScale.x < 0))
+            spriteTransform.localScale = new Vector2(-spriteTransform.localScale.x, spriteTransform.localScale.y);
 
         if (Input.GetKeyDown(KeyCode.E)) 
             CollectItem();
